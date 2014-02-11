@@ -16,5 +16,4 @@
 7.相关服务端口：ShadowSocks（TCP 8888）    Pptp（TCP 1723）     L2tp（TCP 1701 && UDP 1701）
                Remote Desktop Services（TCP 3389）    SSH Remote Login Protocol（TCP 22） 
                Ipsec（TCP 500）  Ipsec（UDP 4500）（仅供参考）
-
-
+8.windows测试连接shadowsocks可以使用Freedbox.exe

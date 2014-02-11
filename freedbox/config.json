@@ -1,0 +1,8 @@
+{
+		"server":"117.121.10.69",
+		"server_port":8888,
+		"local_port":65509,
+		"password":"110110",
+		"timeout":600,
+		"method":null
+	}

@@ -1,0 +1,2 @@
+2013-01-27 22:49:17.777 00002334 Fatal error: can't load actions file '.\match-all.action': (error number 2). Note that beginning with Privoxy 3.0.7, actions files have to be specified with their complete file names.
+2013-01-28 00:02:31.007 00001848 Fatal error: can't check configuration file 'config.txt':  (error number 2)

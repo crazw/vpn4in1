@@ -1,0 +1,752 @@
+
+{{settings}}
+for-privoxy-version=3.0.11
+{{alias}}
++crunch-all-cookies = +crunch-incoming-cookies +crunch-outgoing-cookies
+-crunch-all-cookies = -crunch-incoming-cookies -crunch-outgoing-cookies
+ allow-all-cookies  = -crunch-all-cookies -session-cookies-only
+ allow-popups       = -filter{all-popups} -filter{unsolicited-popups}
++block-as-image     = +block{Blocked image request.} +handle-as-image
+-block-as-image     = -block
+fragile     = -block -crunch-all-cookies -filter -fast-redirects -hide-referer
+shop        = -crunch-all-cookies allow-popups
+myfilters   = +filter{html-annoyances} +filter{js-annoyances} +filter{all-popups}\
+              +filter{webbugs} +filter{banners-by-size}
+allow-ads   = -block -filter{banners-by-size} -filter{banners-by-link}
+{ \
++change-x-forwarded-for{block} \
++client-header-tagger{css-requests} \
++client-header-tagger{image-requests} \
++hide-from-header{block} \
++set-image-blocker{pattern} \
+}
+standard.Cautious
+{ \
++change-x-forwarded-for{block} \
++client-header-tagger{css-requests} \
++client-header-tagger{image-requests} \
++deanimate-gifs{last} \
++filter{refresh-tags} \
++filter{img-reorder} \
++filter{banners-by-size} \
++filter{webbugs} \
++filter{jumping-windows} \
++filter{ie-exploits} \
++hide-from-header{block} \
++hide-referrer{conditional-block} \
++session-cookies-only \
++set-image-blocker{pattern} \
+}
+standard.Medium
+{ \
++change-x-forwarded-for{block} \
++client-header-tagger{css-requests} \
++client-header-tagger{image-requests} \
++crunch-if-none-match \
++crunch-outgoing-cookies \
++crunch-incoming-cookies \
++deanimate-gifs{last} \
++fast-redirects{check-decoded-url} \
++filter{html-annoyances} \
++filter{content-cookies} \
++filter{refresh-tags} \
++filter{img-reorder} \
++filter{banners-by-size} \
++filter{banners-by-link} \
++filter{webbugs} \
++filter{jumping-windows} \
++filter{frameset-borders} \
++filter{quicktime-kioskmode} \
++hide-if-modified-since{-60} \
++hide-from-header{block} \
++hide-referrer{conditional-block} \
++limit-connect{,} \
++overwrite-last-modified{randomize} \
++set-image-blocker{pattern} \
+}
+standard.Advanced
+{+handle-as-image -filter}
+/.*\.(gif|jpe?g|png|bmp|ico)($|\?)
+{-handle-as-image}
+/.*\.(js|php|css|.?html?)
+{-filter -deanimate-gifs}
+/.*\.og[gv]$
+{+block{Host matches generic block pattern.}}
+ad*.
+.*ads.
+.ad.?.
+.ad.[a-ik-z][a-oq-z].
+.ad.jp.*.
+.ad.???*.
+.*advert*.
+*banner*.
+count*.
+*counter.
+promotions.
+metrics.
+{-block}
+adsl.
+ad[udmw]*.
+adbl*.
+adam*.
+adapt*.
+adob*.
+adrenaline.
+adtp*.
+adv[oia]*.
+adventure*.
+.*road*.
+.olympiad*.
+.*load*.
+.*[epu]ad*.
+county*.
+countr*.
+metrics.torproject.org/
+linuxcounter.net/
+{+block{Path matches generic block pattern.}}
+/(.*/)?ad(\?|/|s|v|_?(image|se?rv|box)|cycle|rotate|mentor|click|f[ra]m|script|stream|fetch|log|space)
+/phpads(new)?/
+/(.*/)?(ad|all|nn|db|promo(tion)?)?[-_]?banner
+/(.*/)?(publicite|werbung|rekla(me|am)|annonse|maino(kset|nta|s)?/)
+/.*(count|track|compteur|(?<!relo)adframe|adse?rve?|banner)(er|run)?(\?|\.(pl|cgi|exe|dll|asp|php|cpt))
+/(.*/)?clicktrack
+/(.*/)?(full)?pop[-_]?(up|over|under|open(er)?)?s?(/|\.)
+/(.*/)?((flash)?pop|live(cnt|count(er)?)).*\.(js|php|cgi)
+{-block}
+/.*ad(sl|v(i[cs]|o|an|ertencia|ent|.*search|erse)) 
+/.*(lo|thre|he|d|gr|l|ro|re|squ|class(ified)?)ads
+/.*account
+support./(.*/)?track
+/.*\.git/objects/
+.edu
+.ac.*/
+.uni-*.de
+.tu-*.de
+.gov
+.hs-*.de
+.fh-*.de
+.org/.*(image|banner)
+{+block{Catch-all block for false-positives.}}
+.ads[erv][rv]*.
+.ads.
+/(.*/)?ad(se?rv|click|stream|image|log|farm|script)
+/.*(top|bottom|left|right|text)_?ad
+{-block}
+/.*desktopadmin
+{+block{Might be a web-bug.} +handle-as-empty-document -handle-as-image}
+/b/ss/.+
+/HG\?hc=
+.visistat.com
+.google-analytics./
+.overture.
+.doubleclick.net/adi
+.doubleclick.net/(.*/)?adj/
+view.atdmt.com/(.*/)?iview/
+tracking.
+/(.*/)?adjs\.php\?
+.bc.yahoo.com/b\?P=
+x*.alexa.com
+/event.ng/
+/cm\?[tc]
+.snapfiles.net/rotation/.*\.asp
+spa.snap.com/
+.insitemetrics.com/
+.extreme-dm.com/
+stats.reinvigorate.net/
+.getclicky.com/
+.quantserve.com
+media.adrevolver.com/
+.chartbeat.com/(.*/)?chartbeat\.js$
+js.adlink.net/
+.sitestat.com/
+pagead*.googlesyndication./.*\.js
+/js/slider\.js
+scripts.chitika.net/.*\.js
+.adinterax.com/.*\.js
+.googleadservices.com/gampad/.*\.js
+/.*/ad\.js\?
+/.*omniture.*\.js
+.gemius.pl/
+{+block{Might be a web-bug.} -handle-as-empty-document +handle-as-image}
+/(.*/)?__utm.gif\?
+/.*\.gif\?D=DM
+stats./c?rc/.*/uc.gif
+/(.*/)?dcs.gif\?&?dcs
+/(.*/)?c(lear)?\.gif\?.
+/(.*/)?(clear|blank|(trans_?|1x)?1).gif\?.
+stats./.*\.gif\?
+.yieldmanager.com/pixel\?
+.analytics.yahoo.com
+go.idmnet.bbelements.com/please/showit/
+{+block{Domain parking site}}
+.sedoparking.com/
+landing.trafficz.com/
+.searchnut.com/\?domain
+wwwz.websearch.verizon.net/search\?qo=
+{+block{Site-specific block pattern matches.}}
+.hitbox.com
+.the-gadgeteer.com/cgi-bin/getimage.cgi/
+dest.travelocity.com/website/destinations/images/partner_frommers.gif
+dest.travelocity.com/website/destinations/images/travelex_logo.gif
+i.imdb.com/Photos/CMSIcons/(?!buttons|emoticons)
+rcm.amazon.com
+.nytimes.com/adx/
+.adtrak.net
+.elitemediagroup.net
+.popuptraffic.com
+.hit-now.com
+[a-v]*.valueclick.com
+.cpays.com
+.oxado.com
+.adult*finder.com
+/scripts/cms/xcms.asp
+/.*intellitxt/
+.intellitxt.com
+.kontera.com
+.tribalfusion.com/ctxt
+.klipmart.com
+ad*.com.com
+sales.liveperson.net
+.iad.liveperson.net
+.coremetrics.com/
+.realmedia.com/data/
+.revsci.net
+.clickability.com
+/.*clickability(.com)?/
+stats.*.ihost.com
+.2o7.net
+.webtrends.com
+.tacoda.
+ad.theadhost.com
+.adbureau.net
+.adgardener.com
+.revenue.net
+.geocities.com/js_source
+.dartsearch.net
+.zedo.com
+.trk.sodoit.com/
+.espace.netavenir.com
+.hitfarm.com
+.topnemo.com/engine
+.top100categories.com/engine
+/(t|search)\.php\?uid=ws[a-z0-9]+\.[a-z0-9]+
+.adinterax.com/(?!(.*)\.(js|gif|jpg))
+img.bluehost.com
+linuxinsider.com/images/sda/
+[a-z].clickdensity.com
+.widgetbucks.com
+img.dailymail.co.uk/i/promo_boxes/
+.fimserve.com
+static.lycos-europe.net
+82.99.18.195
+.atdmt.com/
+.awin1.com
+.adjuggler.com/servlet/ajrotator/
+bcc.co.uk/
+fusion.adtoma.com/
+.chartbeat.net/(.*/)?ping\?
+.atemda.com/
+.omtrdc.net/
+www91.intel.com/
+/js\.ng/
+/popunder
+/t\.php\?cat=.*&kw=.*&sc=
+jlinks.industrybrains.com/
+js.adsonar.
+bwp.
+.yahoo.com/mc/stampNonJs
+{+block-as-image}
+/.*ad_?image\.(php|cgi)
+/.*recips?/
+/bandeaux/
+/.*client_?ad\.(php|cgi)
+/.*AIM_UAC.adp
+/(.*/)?adserver/image
+/(.*/)?ads/images/
+/.*\?ad_(type|size)=
+?r.atwola.com
+.[a-vx-z]*.doubleclick.net/(?!(.*/)?ad[ji])
+.*servedby.advertising.com
+.yimg.com/.*\.yimg\.com/a/
+.yimg.com/.*/flash/promotions/.*\.(gif|jpg)$
+bs*.gsanet.com
+bs*.einets.com
+.qkimg.net
+[abd-ux-z]*.atdmt.com/
+.fastclick.net
+.casalemedia.com
+kermit.macnn.com/
+quinst.com/images
+valuepage.com/images
+ia.imdb.com/.*\.swf
+.reactivpub.
+.as*.falkag.
+a.tribalfusion.com/
+.adserver.com/
+.ru4.com/
+.smartadserver.com/
+admedia.
+jmcms.cydoor.com/
+.adtrix.com
+*[0-9].tribalfusion.com/
+.img*.mediaplex.com
+a*farm.mediaplex.com/ad/fm/
+matrix.mediavantage.
+.cibleclick.com
+.netracker.net
+.interclick.com
+.maxserving.com
+.gonamic.de
+.webads.
+.adlegend.com
+.belnk.com
+.euros4click.
+ads-*.quarterserver.
+searchportal.information.com/
+images.ibsys.com/
+.lduhtrp.net/image
+scripts.chitika.net/.*\.(gif|png|jpg)
+.projectwonderful.com/gen.php
+.akamai.net/.*\.adtech\.de/.*\.(gif|png)
+.adinterax.com/.*\.(gif|jpg)
+img.directtrack.com
+.emediate.eu/
+.googleadservices.com/~
+.richmedia.yahoo.com/.*\.(gif|jpe?g)\?ad
+.served.by.adshuffle.com/
+.adsonar.com/.*/imgs/
+.pclick.yahoo.com/images/
+/.*\&adtype=
+/tradedoubler/.*\.swf
+hstse.tradedoubler.com/.*\.swf
+www.zdnetasia.com/.*/sponsor/.*\.gif$
+.googlesyndication.com/.*/imgad\?
+.*.*.spylog.com/
+statse.webtrendslive.com
+spinbox.versiontracker.com/.*\.(gif|jpg)
+stat.onestat.com
+imp*.tradedoubler.com
+stat.webmedia.
+log*.xiti.com/
+log*.hit-parade.com/
+www.xml.eshop.msn.com/tracksponsorimpression.asp
+.imrworldwide.com
+.clicktracks.com
+.etracker.
+.x-traceur.com
+content.ipro.com
+.247realmedia.com
+.sify.com
+.searchignite.com
+.statcounter.com
+.research-int.se/data
+.cybermonitor.com
+log.go.com/log
+stats.indextools.com
+tra*.measuremap.com
+.eurekster.com/sidebar
+tra*.mybloglog.com
+.guesttrace.
+insightxe./data/
+.insightfirst.com
+rss.slashdot.org/~a/Slashdot/slashdot\?
+rss.slashdot.org/~r/Slashdot/slashdot/~4/
+[a-z][0-9].nedstatbasic.net/
+feeds.feedburner.com/~r/.*/~4/
+feedproxy.google.com/~r/.*/~4/
+feeds.feedburner.com/~a/DilbertDailyStrip\?
+track.webtrekk.de/
+b.scorecardresearch.com/
+sb.scorecardresearch.com/
+b.collective-media.net/
+ .ivwbox.de/
+s*.sitemeter.com/(meter|js/counter.js)
+fastcounter.bcentral.com/
+bilbo.counted.com/
+.travelocity./Sponsor_gifs/
+.weather.com/creatives/
+.weather.com/web/services/email/
+/.*/topslots/topslot
+.contextweb.com/
+.offermatica.com/
+.adbrite.com
+.jpost.com/images/\d+/promos/
+.infoempleo.com/(pop-up|images(/Nueva/|/motor))
+hera.hardocp.com/
+leadback.advertising.
+.yieldmanager.com/
+.displayadsmedia.com
+astalavista.box.sk/adult.*\.jpg
+smartad.*.*.*
+.dinside.no/annonsorer/
+/RealMedia/ads/
+/RealMediaAds/
+/top\.php\?d=.*\.[a-z]{2,5}
+.google.com/afsonline
+{-block}
+.faqs.org/banner\.html
+bannerblind.mozdev.org
+advogato.org
+ad*.vhb.de
+.globalintersec.com/adv
+banners.wunderground.com/
+.openoffice.org/banners/
+.amazon.com/.*/banners/
+.washingtonpost.com/wp-srv/
+.gnome.org
+.nycsubway.org/img/banner
+.forgotten-ny.com/ADS/
+counter.li.org
+adrian.adrian.org
+adela.karlin.mff.cuni.cz
+.swcp.com/rtoads/
+.privoxy.org
+sourceforge.net/.*tracker
+.brawnylads.com
+adzapper.
+.altavista.com/web/adv
+rads.mcafee.com/
+linuxfromscratch.org/
+dv411.com/.*advc50
+.freeswan.org/
+www.arm.com/.*ads
+www.anybrowser.org/
+www.tads.org/
+.mbe.com/redir/packtrack.asp
+.iship.com/trackit/
+.esis.com.au/AdvSerialCards
+.familysearch.org/.*banner
+coder.com/creations/banner/
+arnolds.dhs.org/static/adv_tools.html
+.gpl.org/
+.europa.eu.
+.schooner.com/~loverso/no-ads/
+source.bungie.org/
+adonthell.linuxgames.com/
+.bbc.co.uk/
+adc.netlabs.org/
+.tela.bc.ca/tads/
+adbusters.org/
+.eads.*/
+.qualcomm.com/brew/en/developer/resources/ad/
+/update\d\d/.*adsnt.*
+.microsoft.com/.*masthead
+.indymedia.org
+.seanbaby.com
+.cels.org/.*track
+/(.*/)?somerights20.gif
+.creativecommons.org
+.ups.com/.*/track
+.adju.
+.rubberslug.com
+.freebsd.org
+.fsf.org
+.gnu.org
+adium*.*.
+.googleadservices./pagead/adclick
+.garaget.org/annonser/
+edge.macworld.com
+.discovery./.*/topads/
+.dawn.com/.*/(9690dina|aurora_award)\.
+.google.com/reader/
+.parcel2go.com/track
+.amazon.com/gp/gift-central/.*recip/
+.yimg.com/.*/themes/ad/
+.ad.*/pub/mozilla.org/
+lads.myspace.com
+.shockwave.com/servlet/DownloadEcommTracker
+.fish4.co.uk/.*ad
+.mp3.com.au/.*popup
+/(.*/)?dynamiskt/reklam_media/did_
+switch.atdmt.com/action/
+.parcelforce.com/.*track
+.microsoft.com/.*/adschema/
+.wikimedia.org/
+.wikipedia.org/
+.wiktionary.org/
+.haxx.se/docs/adv_
+www.google.com/adsense/
+.encyclopediadramatica.com/
+tags.gawker.com/.*css$
+.tnt.co.uk/TrackNTrace/
+/ups/track\.php
+ad.doubleclick.net/crossdomain\.xml
+.doubleclick.net/.*/DartShell.*\.swf
+.doubleclick.net/.*/DARTSHELLCONFIGXML
+real.custhelp.com/cgi-bin/real\.cfg/php/enduser/popup_adp\.php
+fritz.fonwlan.box/
+fritz.box/
+.adobe.com
+qa.debian.org/popcon
+.mta.info/.*advmain.htm$
+.proaurum.de/banner[ABC]\d_?/
+.goldmoney.com/
+.ad.nl/
+.yimg.com/.*/ads/bestofygroups.jpg$
+.nytimes.com/.*/ads\.css$
+.turner.com/cnn/.*/AdServiceAdapter.swf
+lads.myspacecdn.com/
+.phobos.apple.com/
+.emediate.eu/.*EASLink=
+.meteo.pl/advajax\.js
+adressa.no/
+adresseavisen.no/
+.facebook.com/.*/track.php
+.tads.org/
+adtoma.com/
+adactio.com/
+www.peereboom.us/adsuck/
+.svd.se/.*\.css($|\?)
+include.ebaystatic.com/.*omniture.*\.js
+.yimg.com/d/combo\?
+/.*\.css$
+adesklets.sourceforge.net/
+adassier.wordpress.com/
+adassier.files.wordpress.com
+adainitiative.org/
+{fragile}
+.office.microsoft.com
+.windowsupdate.microsoft.com
+www.apple.com
+store.apple.com
+images.apple.com
+.update.microsoft.com
+mail.google.*
+{shop}
+.quietpc.com
+.worldpay.com   
+.jungle.com
+.dabs.com
+.overclockers.co.uk
+.db24.de
+.ebay.*
+.mobile.de
+www.fondationlejeu.com
+www.techtv.com
+.mywebgrocer.com
+{-session-cookies-only}
+.nytimes.com/
+.volkskrant.nl/
+{allow-popups}
+www.aprilbarrows.com/discography\.html$
+.nvidia.com
+www*.chathouse.com/games/
+.bild.t-online.de
+.netflix.com
+my.aol.com
+i.cnn.net/cnn/.*/clickability/button
+.rosettaproject.org
+.quantum.com
+.liberation.fr
+{-fast-redirects}
+www.ukc.ac.uk/cgi-bin/wac\.cgi\?
+.google.*
+.altavista.com/(.*(like|url|link):|trans.*urltext=)http
+.speedfind.de
+.nytimes.com
+.yahoo.com/
+.w3.org
+.directhit.com
+.zagats.com
+my.msn.com/passport/pp(consent|set)\.ashx\?msnru=
+www.passport.com/Consumer/default\.asp\?lc=[0-9]+&msppchlg=[01]&mspplogin=
+login.passport.com/logout\.(asp|srf)\?
+download.com.com/redir\?
+www.fileplanet.com/redir\.asp\?
+.edu
+.archive.org
+www.guenstiger.de
+.anonymizer.com
+www.mailtothefuture.com
+support.microsoft.com/
+.alexa.com
+www.translate.ru/url/
+schneegans.de/
+config.privoxy.org/
+.wsj.com/lmda/do/checkLogin
+del.icio.us/
+.ctv.ca/.*&site_cfcn=http://
+.informit.com/.*&r=http%3a%2f%2f
+access.adobe.com/access/getStatus.do\?jobid=&srcPdfUrl=
+view.samurajdata.se/ps\.php\?url=
+.blogger.com/navbar\.g
+.dmoz.org/editors/editurl\.cgi
+.ebay.de/ws/eBayISAPI\.dll\?
+.amazon.com/gp/redirect.html/.*location.*&token
+.groundspring.org/
+.landsend.de/
+.youtube.com/swf/.*swf=
+.redbot.org/
+webcache.googleusercontent.com/
+.googleusercontent.com/.*=cache:
+{+redirect{s@.*url=@http://@} -block}
+go.eniro.dk/.*EASLink=http://.*url=(?!<=http:)
+.emediate.eu/.*EASLink=http://.*url=(?!<=http:)
+{-filter -prevent-compression}
+.cvs.
+/.*(cvs(view|web)|viewcvs)
+.svn.
+.websvn.
+/(.*/)?svn/
+liveupdate.symantec.com
+liveupdate.liveupdatesymantec.com
+liveupdate.symantecliveupdate.com
+.bookmarklets.com
+.squarefree.com/bookmarklets/
+swquery.apple.com
+swscan.apple.com
+.speakeasy.net/\d+k
+.debian.org
+bugzilla.
+.tldp.org
+webmail.
+.wiki*.
+.*wiki.
+/.*wiki/
+.wiktionary.org/
+maps.google.
+.google.com/(calendar|reader)
+code.
+developer.
+.mozdev.org
+.mozilla.org
+.perl.org
+.cpan.org
+.webdeveloper.com
+.ibm.com/developerworks
+.apache.org/docs
+.comptechdoc.org
+.webmonkey.com
+.webreference.com
+docs.sun.com
+java.sun.com
+.thescripts.com
+.php.net
+.phpdeveloper.org
+.oreillynet.com/pub
+.devshed.com
+.htmlgoodies.com
+.javascript.com
+javascript.internet.com
+.w3schools.com
+.devguru.com
+javascriptkit.com
+.xulplanet.com
+.perl.com/language/newdocs
+.freebsd.org
+.watson.org
+.netbsd.org
+.openbsd.org
+.dragonflybsd.org
+.freedesktop.org
+.gnu.org
+.fedoraproject.org
+.userscripts.org
+/(.*/)?flyspray/
+/(.*/)?mail(man|archive|inglists?)/
+bugs.
+quoka.de
+{-filter{banners-by-size}}
+.pricegrabber.com/search_getprod.php
+.cnn.com
+.gamespot.com/gamespot
+www.wral.com
+.cartoonnetwork.com/
+.anybrowser.org
+images.google.
+.pbs.org/.*/roadshow/
+objects.povworld.org/cat/
+www.xach.com/gimp/
+.mapquest.com/directions/
+.theonion.com/content/
+.pattilupone.net/gallery.html
+.ambrosiasw.com/
+.microsoft.com
+javabog.dk/ijk/
+.w3.org
+.encyclopediadramatica.com/
+.ikea.com/
+.froscon.de/
+.fsfe.org/
+.couchsurfing.com/
+.couchsurfing.org/
+.thinkgeek.com/
+{-filter{banners-by-link}}
+.encyclopediadramatica.com/
+{-hide-referrer}
+.totaleclips.com
+validator.w3.org/check\?uri=referer
+.petitiononline.com/mod_perl/signed.cgi
+.telia.se
+schneegans.de/sv/\?url=referer
+{-deanimate-gifs}
+.care2.com
+.care-mail.com
+.wunderground.com
+66.28.250.180/data/
+.teamquest.com/gifs/gunther/
+.rubberslug.com
+.wikipedia.org/
+{+filter{site-specifics}}
+.spiegel.de/static/js/flash-plugin\.js
+.quelle-bausparkasse.de/$
+.groups.yahoo.com/group/
+.nytimes.com/
+{-filter{demoronizer}}
+.jp
+.cn
+.tw
+.ru
+.kr
+{-filter{content-cookies} -filter{webbugs}}
+.friendscout24.de
+.webreference.com/js/column8/property.html
+{-filter{fun}}
+/(.*/)?user-manual/filter-file.html
+{-filter{img-reorder}}
+.google.
+/.*wired(\.com)?/
+.wired.com/
+{-filter{js-annoyances}}
+.nasa.gov
+.cnrs.fr
+blogs.msdn.com
+{-filter{unsolicited-popups}}
+/.*mt.cgi$
+.cnrs.fr
+blogs.msdn.com
+{-filter{jumping-windows}}
+.openstreetmap.org
+{+fast-redirects{check-decoded-url} -block}
+rds.yahoo.com/
+dw.com.com/redir\?
+.bloglines.com/r\?
+www.skweezer.net/bloglines
+.fastclick.net/w/get\.media\?
+.awin1.com/.*=http://
+{+block{Looks like an anti-leech trigger URL.}}
+/antitheft\.php
+{+filter{tiny-textforms}}
+.sourceforge.net/tracker
+{+downgrade-http-version}
+:631
+{+redirect{http://config.privoxy.org/}}
+.privoxy.org/config
+{-hide-referrer -fast-redirects}
+p.p/
+config.privoxy.org/
+{-fast-redirects +redirect{s@^.*\*(http://login\.yahoo\.com/.*)$@$1@i}}
+.yahoo./.*http://login.yahoo.com/config/login.*http://
+{-block -filter}
+.yimg.com/g/combo/1\?event-custom/
+{-block -filter{content-cookies}}
+{-filter{content-cookies}}
+.flickr.com/
+{-handle-as-empty-document \
+ +handle-as-image \
+}
+TAG:^IMAGE-REQUEST$
+{+handle-as-empty-document \
+ -handle-as-image \
+}
+TAG:^CSS-REQUEST$
