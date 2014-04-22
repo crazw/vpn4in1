@@ -1,20 +1,24 @@
 vpn4in1
 =======
 
-E-mail:jiazhanwei1991@gmail.com
+Author：Crazw
 
-Blog:www.appad.net
+E-mail:craazw@gmail.com
+
+Blog:http://www.crazw.com/
 
 =======
 
-VPN：pptp+openvpn(obfsproxy)+l2tp+shadowsocks
+VPN：
+
+        pptp+openvpn(obfsproxy)+l2tp+shadowsocks
 
 =======
 Install：
 
-    tar zxvf vpn4in1.tar.gz
-  
-    cd vpn4in1/
-  
-    sh vpn4in1.sh 2>&1 | tee vpn3in1.log
+        tar zxvf vpn4in1.tar.gz
+      
+        cd vpn4in1/
+      
+        sh vpn4in1.sh 2>&1 | tee vpn4in1.log
 
