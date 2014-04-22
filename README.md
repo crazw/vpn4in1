@@ -9,14 +9,14 @@ Blog:http://www.crazw.com/
 
 =======
 
-VPN4in1组件：
+vpn4in1组件：
 
         pptp+openvpn(obfsproxy)+l2tp+shadowsocks
 
 =======
 安装方式：
 
-        tar zxvf vpn4in1.tar.gz
+        git clone https://github.com/crazw/vpn4in1.git
       
         cd vpn4in1/
       
