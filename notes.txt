@@ -1,5 +1,5 @@
 笔记：
-1.安装日志：vpn3in1.log
+1.安装日志：vpn4in1.log
 2.obfsproxy用于OpenVPN的流量混淆
 3.iptables路径：/etc/sysconfig/iptables
 4.obfsproxy的全局keys和server.conf放在/etc/openvpn目录下
