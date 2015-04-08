@@ -50,7 +50,7 @@ wd=`pwd`
 wd_work=`pwd`/work
 mkdir -p $wd_work
 server_ip=`ifconfig  | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk 'NR==1 { print $1}'`
-radius_server="116.251.208.122"
+radius_server="xxx.xxx.xxx.xxx"
 mysql_root_pwd="zooboa.com"
 secret_key="zooboa.com"
 radusr="root"
